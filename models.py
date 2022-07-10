@@ -78,6 +78,7 @@ class AbstractNetwork(ABC, torch.nn.Module):
 
 
 class MuZeroFullyConnectedNetwork(AbstractNetwork):
+    #define networks
     def __init__(
         self,
         observation_shape,
@@ -125,6 +126,7 @@ class MuZeroFullyConnectedNetwork(AbstractNetwork):
             mlp(encoding_size, fc_value_layers, self.full_support_size)
         )
 
+    # forwards
     def prediction(self, encoded_state):
         policy_logits = self.prediction_policy_network(encoded_state)
         value = self.prediction_value_network(encoded_state)
@@ -426,6 +428,7 @@ class PredictionNetwork(torch.nn.Module):
             x = block(x)
         value = self.conv1x1_value(x)
         policy = self.conv1x1_policy(x)
+        #flatten to channel * resolution_h(w)/16
         value = value.view(-1, self.block_output_size_value)
         policy = policy.view(-1, self.block_output_size_policy)
         value = self.fc_value(value)
@@ -626,7 +629,7 @@ class MuZeroResidualNetwork(AbstractNetwork):
 ########### End ResNet ###########
 ##################################
 
-
+#input size of each layers. default activaltion in between each.
 def mlp(
     input_size,
     layer_sizes,
